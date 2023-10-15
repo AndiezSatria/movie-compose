@@ -1,6 +1,8 @@
 package org.andiez.domain.usecase
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import org.andiez.common.exception.Failure
 import org.andiez.common.functional.Either
@@ -21,6 +23,6 @@ class DetailMovieUseCase @Inject constructor(private val detailRepository: IDeta
             either.flatMap { data ->
                 Either.Right(DomainDataMapper.mapMovieDetailEntityToDomain(data))
             }
-        }
+        }.flowOn(Dispatchers.IO)
     }
 }

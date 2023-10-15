@@ -3,7 +3,7 @@ package org.andiez.common.ui.component.content
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.CircularProgressIndicator
@@ -25,7 +25,7 @@ fun LoadingContent(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(24.dp),
         contentAlignment = Alignment.Center,
     ) {

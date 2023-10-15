@@ -10,8 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import org.andiez.common.ui.navigation.BottomNavItem
 import org.andiez.common.ui.navigation.Screens
+import org.andiez.feature.detail.navigation.detailScreen
 import org.andiez.feature.favorite.navigation.favoriteScreen
 import org.andiez.feature.movie.navigation.movieScreen
 import org.andiez.feature.tvshow.navigation.tvShowScreen
@@ -54,9 +54,16 @@ fun BaseComposeApp(
                 )
             }
             composable(Screens.About.route) { AboutScreen() }
-            movieScreen { showId -> }
-            tvShowScreen { showId -> }
-            favoriteScreen { showId, showType -> }
+            movieScreen { showId ->
+                navController.navigate(Screens.Detail.createRoute(showId, "movie"))
+            }
+            tvShowScreen { showId ->
+                navController.navigate(Screens.Detail.createRoute(showId, "tv"))
+            }
+            favoriteScreen { showId, showType ->
+                navController.navigate(Screens.Detail.createRoute(showId, showType))
+            }
+            detailScreen()
         }
     }
 }

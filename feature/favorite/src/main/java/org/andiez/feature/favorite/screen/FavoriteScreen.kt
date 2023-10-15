@@ -171,6 +171,7 @@ fun FavoriteScreen(
                                 onClick = { showItems.refresh() },
                                 isEmpty = false,
                                 message = error.error.message.toString(),
+                                modifier = Modifier.fillMaxSize(),
                             )
                         }
                     }

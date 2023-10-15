@@ -7,7 +7,21 @@ object AndroidConfig {
     const val versionName = "1.0"
 }
 
+object ProjectConfig {
+    const val android_application = "com.android.application"
+    const val android_library = "com.android.library"
+    const val kotlin_android = "org.jetbrains.kotlin.android"
+    const val kotlin_jvm = "org.jetbrains.kotlin.jvm"
+    const val hilt = "com.google.dagger.hilt.android"
+    const val safe_args = "androidx.navigation.safeargs"
+}
+
 object Versions {
+    const val android_application = "7.4.2"
+    const val kotlin_android = "1.7.0"
+    const val kotlin_jvm = "1.8.0"
+    const val safe_args = "1.8.0"
+
     const val espresso = "3.5.1"
     const val kotlin = "1.8.10"
     const val gradle = "7.2.2"

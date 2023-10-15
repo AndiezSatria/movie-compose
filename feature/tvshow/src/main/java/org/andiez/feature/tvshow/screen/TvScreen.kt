@@ -142,6 +142,7 @@ fun TvShowScreen(
                                 onClick = { tvList.refresh() },
                                 isEmpty = false,
                                 message = error.error.message.toString(),
+                                modifier = Modifier.fillMaxSize(),
                             )
                         }
                     }

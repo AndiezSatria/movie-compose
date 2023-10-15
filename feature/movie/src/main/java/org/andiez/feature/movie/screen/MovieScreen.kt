@@ -144,6 +144,7 @@ fun MovieScreen(
                                 onClick = { movieList.refresh() },
                                 isEmpty = false,
                                 message = error.error.message.toString(),
+                                modifier = Modifier.fillMaxSize(),
                             )
                         }
                     }

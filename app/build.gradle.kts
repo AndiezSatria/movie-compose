@@ -68,6 +68,7 @@ dependencies {
     implementation(project(mapOf("path" to ":feature:movie")))
     implementation(project(mapOf("path" to ":feature:tvshow")))
     implementation(project(mapOf("path" to ":feature:favorite")))
+    implementation(project(mapOf("path" to ":feature:detail")))
 
     implementation(AndroidLib.kotlin_stdlib)
     implementation(AndroidLib.androidx_appcompat)

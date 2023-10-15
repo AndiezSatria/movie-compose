@@ -55,6 +55,20 @@ class DetailViewModel @Inject constructor(
         getCastDetail(type, id)
     }
 
+    fun setFavorite(type: String, item: DetailItem) {
+        viewModelScope.launch {
+            if (type == "movie") {
+                favoriteMovieUseCase.invoke(
+                    PresenterDataMapper.mapDetailPresenterToMovieDomain(item), item.isFavorite,
+                )
+            } else {
+                favoriteTvUseCase.invoke(
+                    PresenterDataMapper.mapDetailPresenterToTvShowDomain(item), item.isFavorite,
+                )
+            }
+        }
+    }
+
     fun getMovieDetail(id: Int) {
         viewModelScope.launch {
             detailMovieUseCase.invoke(id).catch {
