@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -23,11 +24,16 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,7 +50,6 @@ import org.andiez.common.ui.theme.BackgroundPrimary
 import org.andiez.common.ui.theme.ContentFourth
 import org.andiez.common.ui.theme.ContentPrimary
 import org.andiez.common.ui.theme.ContentTertiary
-import org.andiez.common.ui.theme.ErrorPrimary
 import org.andiez.common.util.CommonConstant
 import org.andiez.feature.detail.R
 import org.andiez.presenter.model.CastItem
@@ -63,6 +68,7 @@ fun DetailRoute(
     val detailUiState = viewModel.uiState.collectAsState().value
     val id = viewModel.id.collectAsState().value
     val type = viewModel.type.collectAsState().value
+    val isFavorite by viewModel.isFavorite
 
     DetailScreen(
         detailUiState = detailUiState,
@@ -72,7 +78,8 @@ fun DetailRoute(
             else viewModel.getTvDetail(id)
         },
         onRetryDetail = { viewModel.getCastDetail(type, id) },
-        onSetFavorite = { viewModel.setFavorite(type, it) }
+        onSetFavorite = { viewModel.setFavorite(type, it) },
+        isFavorite = isFavorite,
     )
 }
 
@@ -84,6 +91,7 @@ fun DetailScreen(
     onRetryCast: () -> Unit,
     onRetryDetail: () -> Unit,
     onSetFavorite: (item: DetailItem) -> Unit,
+    isFavorite: Boolean,
 ) {
     val detailItem = detailUiState.showDetail
     Box {
@@ -107,6 +115,21 @@ fun DetailScreen(
                             },
                         contentAlignment = Alignment.BottomCenter,
                     ) {
+                        AsyncImage(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(500.dp),
+                            model = CommonConstant.IMG_W780 + detailItem.data.backdrop,
+                            contentScale = ContentScale.Crop,
+                            contentDescription = null,
+                        )
+                        Box(
+                            modifier = Modifier.fillMaxWidth().height(200.dp).background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(Color.Companion.Transparent, BackgroundPrimary)
+                                )
+                            )
+                        )
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -117,31 +140,29 @@ fun DetailScreen(
                             AsyncImage(
                                 modifier = Modifier
                                     .width(140.dp)
-                                    .height(200.dp),
+                                    .height(200.dp)
+                                    .clip(MaterialTheme.shapes.small),
                                 model = CommonConstant.IMG_W500 + detailItem.data.img,
+                                contentScale = ContentScale.Crop,
                                 contentDescription = null,
                             )
                             IconButton(
-                                modifier = Modifier.background(ActivePrimary),
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .background(ActivePrimary),
                                 onClick = {
                                     onSetFavorite(detailItem.data)
                                 },
                             ) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(id = if (detailItem.data.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border),
+                                    imageVector = ImageVector.vectorResource(id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border),
                                     contentDescription = "Favorite Button",
-                                    tint = if (detailItem.data.isFavorite) ErrorPrimary else BackgroundPrimary
+                                    tint = BackgroundPrimary
                                 )
                             }
                         }
-                        AsyncImage(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(500.dp),
-                            model = CommonConstant.IMG_ORI + detailItem.data.backdrop,
-                            contentDescription = null,
-                        )
                     }
+                    Spacer(modifier = Modifier.height(24.dp))
                     Text(
                         text = detailItem.data.title,
                         style = MaterialTheme.typography.h5.copy(
@@ -240,7 +261,7 @@ fun DetailScreen(
                         },
                     ) {
                         Icon(
-                            imageVector = ImageVector.vectorResource(id = if (detailItem.data.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border),
+                            imageVector = ImageVector.vectorResource(id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border),
                             contentDescription = "Favorite Button",
                             tint = BackgroundPrimary
                         )

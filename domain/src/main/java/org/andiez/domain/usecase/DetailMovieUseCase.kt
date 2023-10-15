@@ -1,5 +1,6 @@
 package org.andiez.domain.usecase
 
+import com.github.ajalt.timberkt.d
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -19,8 +20,10 @@ import javax.inject.Inject
 
 class DetailMovieUseCase @Inject constructor(private val detailRepository: IDetailRepository) {
     operator fun invoke(id: Int): Flow<Either<Failure, MovieDetail>> {
+        d { "get movie Detail : Invoked" }
         return detailRepository.getMovieDetail(id).map { either ->
             either.flatMap { data ->
+                d { "Data movie : ${data.title}" }
                 Either.Right(DomainDataMapper.mapMovieDetailEntityToDomain(data))
             }
         }.flowOn(Dispatchers.IO)

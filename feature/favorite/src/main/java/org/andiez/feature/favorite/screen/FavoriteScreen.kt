@@ -89,7 +89,8 @@ fun FavoriteScreen(
                         selectedTabIndex = currentTab,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
+                            .padding(horizontal = 24.dp)
+                            .background(BackgroundPrimary),
                         containerColor = BackgroundPrimary,
                         indicator = { tabPositions ->
                             Box(
@@ -125,6 +126,7 @@ fun FavoriteScreen(
                             unselectedContentColor = ContentFourth,
                         )
                     }
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
                 if (showItems.itemCount < 1) {
                     item {

@@ -1,8 +1,12 @@
 package org.andiez.feature.detail.screen
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.ajalt.timberkt.e
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,7 +34,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val detailMovieUseCase: DetailMovieUseCase,
     private val detailTvUseCase: DetailTvUseCase,
     private val favoriteMovieUseCase: SetFavoriteMovieUseCase,
@@ -39,6 +43,8 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
     val id = savedStateHandle.getStateFlow(CommonConstant.ID_ARGS, -1)
     val type = savedStateHandle.getStateFlow(CommonConstant.TYPE_ARGS, "")
+    private val _isFavorite: MutableState<Boolean> = mutableStateOf(false)
+    val isFavorite : State<Boolean> get() = _isFavorite
     private val detailShow:
             MutableStateFlow<UiState<DetailItem>> = MutableStateFlow(UiState.Loading)
     private val casts:
@@ -59,12 +65,14 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             if (type == "movie") {
                 favoriteMovieUseCase.invoke(
-                    PresenterDataMapper.mapDetailPresenterToMovieDomain(item), item.isFavorite,
+                    PresenterDataMapper.mapDetailPresenterToMovieDomain(item), _isFavorite.value,
                 )
+                _isFavorite.value = !_isFavorite.value
             } else {
                 favoriteTvUseCase.invoke(
-                    PresenterDataMapper.mapDetailPresenterToTvShowDomain(item), item.isFavorite,
+                    PresenterDataMapper.mapDetailPresenterToTvShowDomain(item), _isFavorite.value,
                 )
+                _isFavorite.value = !_isFavorite.value
             }
         }
     }
@@ -86,6 +94,7 @@ class DetailViewModel @Inject constructor(
                     }
                 }) { data ->
                     data.let {
+                        _isFavorite.value = it.isFavorite
                         detailShow.value =
                             UiState.Success(PresenterDataMapper.mapDetailMovieDomainToPresenter(it))
                     }
@@ -111,6 +120,7 @@ class DetailViewModel @Inject constructor(
                     }
                 }) { data ->
                     data.let {
+                        _isFavorite.value = it.isFavorite
                         detailShow.value =
                             UiState.Success(PresenterDataMapper.mapDetailTvShowDomainToPresenter(it))
                     }
@@ -122,6 +132,7 @@ class DetailViewModel @Inject constructor(
     fun getCastDetail(type: String, id: Int) {
         viewModelScope.launch {
             castUseCase.invoke(type, id).catch {
+                e { "Cast Detail" + it.toString() }
                 casts.value = UiState.Error(it.message.toString())
             }.collect { result ->
                 result.fold({ failure ->

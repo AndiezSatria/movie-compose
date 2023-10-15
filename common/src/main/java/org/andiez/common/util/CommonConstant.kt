@@ -8,6 +8,8 @@ object CommonConstant {
     const val ID_ARGS = "id_args"
     const val TYPE_ARGS = "type_args"
     const val IMG_W500 = "https://image.tmdb.org/t/p/w500"
+    const val IMG_W780 = "https://image.tmdb.org/t/p/w780"
+    const val IMG_W185 = "https://image.tmdb.org/t/p/w185"
 
     const val REMINDER_TITLE = "reminder_title"
     const val REMINDER_MESSAGE = "reminder_message"

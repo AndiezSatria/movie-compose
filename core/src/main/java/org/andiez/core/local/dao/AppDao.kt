@@ -26,10 +26,10 @@ interface AppDao {
     fun getTvShows(): PagingSource<Int, TvShowEntity>
 
     @Query("SELECT * FROM MovieDetailTable WHERE id = :id")
-    fun getMovieDetail(id: Int): Flow<MovieDetailEntity>
+    fun getMovieDetail(id: Int): Flow<MovieDetailEntity?>
 
     @Query("SELECT * FROM TvShowDetailTable WHERE id = :id")
-    fun getTvDetail(id: Int): Flow<TvShowDetailEntity>
+    fun getTvDetail(id: Int): Flow<TvShowDetailEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovies(movies: List<MovieEntity>)

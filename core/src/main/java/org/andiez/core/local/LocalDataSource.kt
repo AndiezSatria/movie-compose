@@ -17,8 +17,8 @@ import org.andiez.core.local.entity.TvShowFavoriteEntity
 interface LocalDataSource {
     fun getMovies(): PagingSource<Int, MovieEntity>
     fun getTvShows(): PagingSource<Int, TvShowEntity>
-    fun getMovieDetail(id: Int): Flow<MovieDetailEntity>
-    fun getTvDetail(id: Int): Flow<TvShowDetailEntity>
+    fun getMovieDetail(id: Int): Flow<MovieDetailEntity?>
+    fun getTvDetail(id: Int): Flow<TvShowDetailEntity?>
     fun getMoviesFavorite(): PagingSource<Int, MovieFavoriteEntity>
     fun getTvShowsFavorite(): PagingSource<Int, TvShowFavoriteEntity>
 

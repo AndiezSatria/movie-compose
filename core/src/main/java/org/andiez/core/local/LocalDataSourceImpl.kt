@@ -2,6 +2,7 @@ package org.andiez.core.local
 
 import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import org.andiez.core.local.LocalDataSource
 import org.andiez.core.local.dao.AppDao
@@ -34,14 +35,14 @@ class LocalDataSourceImpl @Inject constructor(
         return appDao.getTvShows()
     }
 
-    override fun getMovieDetail(id: Int): Flow<MovieDetailEntity> {
+    override fun getMovieDetail(id: Int): Flow<MovieDetailEntity?> {
         val isFavorite = appDao.getMovieIsFavorite(id) > 0
-        return appDao.getMovieDetail(id).map { it.copy(isFavorite = isFavorite) }
+        return appDao.getMovieDetail(id).map { it?.copy(isFavorite = isFavorite) }
     }
 
-    override fun getTvDetail(id: Int): Flow<TvShowDetailEntity> {
+    override fun getTvDetail(id: Int): Flow<TvShowDetailEntity?> {
         val isFavorite = appDao.getTvIsFavorite(id) > 0
-        return appDao.getTvDetail(id).map { it.copy(isFavorite = isFavorite) }
+        return appDao.getTvDetail(id).map { it?.copy(isFavorite = isFavorite) }
     }
 
     override fun getMoviesFavorite(): PagingSource<Int, MovieFavoriteEntity> {

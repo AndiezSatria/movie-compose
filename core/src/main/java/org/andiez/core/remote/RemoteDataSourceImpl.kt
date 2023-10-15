@@ -1,8 +1,10 @@
 package org.andiez.core.remote
 
+import com.github.ajalt.timberkt.d
 import com.github.ajalt.timberkt.e
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.andiez.core.remote.model.ApiResponse
@@ -20,7 +22,8 @@ import javax.inject.Singleton
  */
 
 @Singleton
-class RemoteDataSourceImpl @Inject constructor(private val apiService: AppService) : RemoteDataSource {
+class RemoteDataSourceImpl @Inject constructor(private val apiService: AppService) :
+    RemoteDataSource {
     override suspend fun getMovies(page: Int): Flow<ApiResponse<List<MovieResponse>>> = flow {
         try {
             val response = apiService.getMovie(page = page)
@@ -44,25 +47,25 @@ class RemoteDataSourceImpl @Inject constructor(private val apiService: AppServic
         }
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun getDetailMovie(id: Int): Flow<ApiResponse<MovieDetailResponse>> = flow {
-        try {
+    override suspend fun getDetailMovie(id: Int): Flow<ApiResponse<MovieDetailResponse>> =
+        flow<ApiResponse<MovieDetailResponse>> {
             val response = apiService.getDetailMovie(id)
+            d { "${response.id} ${response.title}" }
             emit(ApiResponse.Success(response))
-        } catch (e: Exception) {
-            emit(ApiResponse.Error(e.message.toString()))
-            e { "RemoteDataSource ${e.message}" }
-        }
-    }.flowOn(Dispatchers.IO)
+        }.catch {
+            emit(ApiResponse.Error(it.message.toString()))
+            e { "RemoteDataSource ${it.message}" }
+        }.flowOn(Dispatchers.IO)
 
-    override suspend fun getDetailTvShow(id: Int): Flow<ApiResponse<TvShowDetailResponse>> = flow {
-        try {
+    override suspend fun getDetailTvShow(id: Int): Flow<ApiResponse<TvShowDetailResponse>> =
+        flow<ApiResponse<TvShowDetailResponse>> {
             val response = apiService.getTvDetail(id)
             emit(ApiResponse.Success(response))
-        } catch (e: Exception) {
-            emit(ApiResponse.Error(e.message.toString()))
-            e { "RemoteDataSource ${e.message}" }
-        }
-    }.flowOn(Dispatchers.IO)
+
+        }.catch {
+            emit(ApiResponse.Error(it.message.toString()))
+            e { "RemoteDataSource ${it.message}" }
+        }.flowOn(Dispatchers.IO).flowOn(Dispatchers.IO)
 
     override suspend fun getCasts(type: String, id: Int): Flow<ApiResponse<List<CastResponse>>> =
         flow {
