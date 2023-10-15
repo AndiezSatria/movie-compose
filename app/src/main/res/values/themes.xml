@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SubmissionCompose" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/main</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+    <style name="Theme.SubmissionCompose.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.AnimatedSplashScreenDemo.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.AnimatedSplashScreenDemo.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>

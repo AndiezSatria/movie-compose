@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="txt_empty_info">Tidak ada data untuk saat ini.</string>
+    <string name="txt_not_found_info">Data yang dicari tidak ditemukan.</string>
+    <string name="txt_no_favorite_yet">Belum ada acara favorite yang ditambahkan. Tambahkan sekarang!</string>
+</resources>
