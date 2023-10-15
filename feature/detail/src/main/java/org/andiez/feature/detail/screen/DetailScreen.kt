@@ -176,7 +176,7 @@ fun DetailScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "\"${detailItem.data.title}\"",
+                        text = "\"${detailItem.data.originalTitle}\"",
                         style = MaterialTheme.typography.body1.copy(
                             color = ContentTertiary,
                         ),
