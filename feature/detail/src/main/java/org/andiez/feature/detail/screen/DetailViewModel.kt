@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.ajalt.timberkt.d
 import com.github.ajalt.timberkt.e
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,8 +42,8 @@ class DetailViewModel @Inject constructor(
     private val favoriteTvUseCase: SetFavoriteTvShowUseCase,
     private val castUseCase: CastUseCase,
 ) : ViewModel() {
-    val id = savedStateHandle.getStateFlow(CommonConstant.ID_ARGS, -1)
-    val type = savedStateHandle.getStateFlow(CommonConstant.TYPE_ARGS, "")
+    val showId = savedStateHandle.getStateFlow(CommonConstant.ID_ARGS, -1)
+    val showType = savedStateHandle.getStateFlow(CommonConstant.TYPE_ARGS, "")
     private val _isFavorite: MutableState<Boolean> = mutableStateOf(false)
     val isFavorite : State<Boolean> get() = _isFavorite
     private val detailShow:
@@ -62,6 +63,7 @@ class DetailViewModel @Inject constructor(
     }
 
     fun setFavorite(type: String, item: DetailItem) {
+        d { "Show Type $type" }
         viewModelScope.launch {
             if (type == "movie") {
                 favoriteMovieUseCase.invoke(

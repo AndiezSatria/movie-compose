@@ -1,6 +1,7 @@
 package org.andiez.core.local
 
 import androidx.paging.PagingSource
+import com.github.ajalt.timberkt.d
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -70,18 +71,22 @@ class LocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun addMovieFavorite(favoriteEntity: MovieFavoriteEntity) {
+        d { "Add Movie Fav" }
         appDao.addMovieFavorite(favoriteEntity)
     }
 
     override suspend fun addTvFavorite(favoriteEntity: TvShowFavoriteEntity) {
+        d { "Add Tv Fav" }
         appDao.addTvFavorite(favoriteEntity)
     }
 
     override suspend fun deleteMovieFavorite(id: Int) {
+        d { "Delete Movie Fav" }
         appDao.deleteMovieFavorite(id)
     }
 
     override suspend fun deleteTvFavorite(id: Int) {
+        d { "Delete Tv Fav" }
         appDao.deleteTvFavorite(id)
     }
 

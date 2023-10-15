@@ -13,6 +13,6 @@ class SetFavoriteMovieUseCase @Inject constructor(private val detailRepository: 
         if (!isFavorite)
             detailRepository.setMovieFavorite(DomainDataMapper.mapMovieToFavoriteEntity(movie))
         else
-            detailRepository.deleteTvFavorite(movie.id)
+            detailRepository.deleteMovieFavorite(movie.id)
     }
 }

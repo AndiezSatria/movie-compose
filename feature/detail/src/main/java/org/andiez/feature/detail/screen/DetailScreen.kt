@@ -66,8 +66,8 @@ fun DetailRoute(
     viewModel: DetailViewModel = hiltViewModel(),
 ) {
     val detailUiState = viewModel.uiState.collectAsState().value
-    val id = viewModel.id.collectAsState().value
-    val type = viewModel.type.collectAsState().value
+    val id = viewModel.showId.collectAsState().value
+    val type = viewModel.showType.collectAsState().value
     val isFavorite by viewModel.isFavorite
 
     DetailScreen(
